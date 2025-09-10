@@ -4,6 +4,9 @@ import axios from "axios";
 import { useAuth } from "../context/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { apiConnector } from "../Services/apiConnector";
+import { endpoints } from "../Services/apis";
+const {SENDOTP_API}=endpoints
 
 function Signup() {
   const navigate = useNavigate();
@@ -36,9 +39,13 @@ function Signup() {
     setSignupData(userInfo);
 
     try {
-      const response = await axios.post("/api/v1/users/sendotp", {
+      const response = await axios.post("https://chat-app-4ors.onrender.com/api/v1/users/sendotp", {
         email: userInfo.email,
       });
+      // const response=await apiConnector("POST",SENDOTP_API,{
+      //   email:userInfo.email
+
+      // })
 
       if (!response.data.success) {
         throw new Error(response.data.message);
