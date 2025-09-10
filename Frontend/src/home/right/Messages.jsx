@@ -61,24 +61,25 @@ return (
     className="flex-1 overflow-y-auto"
     style={{ minHeight: "calc(92vh - 8vh)" }}
   >
-    {loading ? (
-      <Loading />
-    ) : Array.isArray(messages) && messages.length > 0 ? (
-      [...new Map(messages.map((msg) => [msg._id, msg])).values()].map(
-        (message, index, arr) => (
-          <div
-            key={message._id}
-            ref={index === arr.length - 1 ? lastMsgRef : null}
-          >
-            <Message message={message} />
-          </div>
-        )
-      )
-    ) : (
-      <p className="text-center mt-[20%] text-gray-400">
-        Say Hi to start the conversation
-      </p>
-    )}
+   {loading ? (
+  <Loading />
+) : (Array.isArray(messages) && messages.length > 0 ? (
+  [...new Map((messages || []).map((msg) => [msg._id, msg])).values()].map(
+    (message, index, arr) => (
+      <div
+        key={message._id}
+        ref={index === arr.length - 1 ? lastMsgRef : null}
+      >
+        <Message message={message} />
+      </div>
+    )
+  )
+) : (
+  <p className="text-center mt-[20%] text-gray-400">
+    Say Hi to start the conversation
+  </p>
+))}
+
   </div>
 );
 
