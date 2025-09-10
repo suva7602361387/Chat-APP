@@ -1,7 +1,7 @@
 import axios from "axios";
 export const getAuthUser = async () => {
   try {
-    const res = await axios.get("/api/v1/users/me");
+    const res = await axios.get(`${process.env.VITE_BACKEND_URL}/api/v1/users/me`);
     return res.data;
   } catch (error) {
     console.log("Error in getAuthUser:", error);

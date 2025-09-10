@@ -14,7 +14,7 @@ const useGetConversation = () => {
 
       setLoading(true);
       try {
-        const res = await axios.get(`/api/v1/messages/getconversation`);
+        const res = await axios.get(`${process.env.VITE_BACKEND_URL}/api/v1/messages/getconversation`);
         //console.log("This is convertion:",res.data.data[0])
         if (res.data?.success) {
           setConversation(res.data.data[0]); // ✅ set conversation list

@@ -14,7 +14,7 @@ const useGetMessage = () => {
 
       try {
         const res = await axios.get(
-          `/api/v1/messages/getmessage/${selectedReceverId._id}`
+          `${process.env.VITE_BACKEND_URL}/api/v1/messages/getmessage/${selectedReceverId._id}`
         );
         setMessage(res.data); // overwrite with fresh API messages
       } catch (error) {

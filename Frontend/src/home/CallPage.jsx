@@ -31,7 +31,7 @@ const callId = rawCallId?.replace(/[^a-zA-Z0-9_-]/g, "");
 
   // Fetch token from backend
   const getStreamToken = async () => {
-    const res = await axios.get("/api/v1/users/token");
+    const res = await axios.get(`${process.env.VITE_BACKEND_URL}/api/v1/users/token`);
     return res.data;
   };
 

@@ -71,7 +71,7 @@ function Profile() {
         });
       }
 
-      const response = await axios.post("/api/v1/users/update-profile", {
+      const response = await axios.post(`${process.env.VITE_BACKEND_URL}/api/v1/users/update-profile`, {
         firstname,
         lastname,
         about,

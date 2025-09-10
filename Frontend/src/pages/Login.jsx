@@ -23,7 +23,7 @@ function Login() {
     };
 
     try {
-      const response = await axios.post(`${process.env.VITE_BACKEND_URL}/api/v1/users/login`, userInfo);
+      const response = await axios.post(`https://chat-app-4ors.onrender.com/api/v1/users/login`, userInfo);
 
       if (response.data) {
         toast.success("Login successful");
