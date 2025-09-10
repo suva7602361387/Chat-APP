@@ -27,7 +27,7 @@ const [authUser, setAuthUser, signupData, setSignupData] = useAuth();
     const { firstname, lastname, email, password, confirmPassword, PhoneNumber } = signupData;
 
     try {
-      const response = await axios.post("/api/v1/users/signup", {
+      const response = await axios.post("https://chat-app-4ors.onrender.com/api/v1/users/signup", {
         firstname,
         lastname,
         email,
