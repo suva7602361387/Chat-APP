@@ -1,8 +1,3 @@
-// context/useGetMessages.js
-import { useEffect, useState } from "react";
-import useConversation from "../statemanage/useConversation";
-import axios from "axios";
-
 const useGetMessage = () => {
   const [loading, setLoading] = useState(false);
   const { messages, setMessage, selectedReceverId } = useConversation();
@@ -16,9 +11,13 @@ const useGetMessage = () => {
         const res = await axios.get(
           `${process.env.VITE_BACKEND_URL}/api/v1/messages/getmessage/${selectedReceverId._id}`
         );
-        setMessage(res.data); // overwrite with fresh API messages
+
+        // ✅ Always extract array safely
+        const fetchedMessages = res.data?.messages || res.data?.data || [];
+        setMessage(fetchedMessages);
       } catch (error) {
         console.error("❌ Error fetching messages:", error);
+        setMessage([]); // reset to empty array on error
       } finally {
         setLoading(false);
       }
@@ -29,5 +28,3 @@ const useGetMessage = () => {
 
   return { loading, messages, setMessage };
 };
-
-export default useGetMessage;
