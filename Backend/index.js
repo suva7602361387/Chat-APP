@@ -22,6 +22,12 @@ app.use(
   })
 );
 
+const corsOptions = {
+    origin: process.env.FRONTENT_URL, // Allow only requests from this origin
+    methods: ['GET','POST','DELETE','PATCH','PUT'], // Allow only these methods
+    allowedHeaders: ['Content-Type', 'Authorization'] // Allow only these headers
+};
+
 app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ limit: "20mb", extended: true }));
 app.use(cors());
