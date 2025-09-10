@@ -11,7 +11,7 @@ const BASE_URL=process.env.FRONTENT_URL;;
 const initilizeSocket = (server) => {
   const io = new Server(server, {
     cors: {
-      origin:"https://chat-app-4ors.onrender.com",
+      origin:BASE_URL ,
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       credentials: true,
     },
