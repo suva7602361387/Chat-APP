@@ -44,7 +44,7 @@ function Logout() {
   const handleLogout = async () => {
     setLoading(true);
     try {
-      await axios.post(`${process.env.VITE_BACKEND_URL}/api/v1/users/logout`);
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/logout`);
       if (socket) {
       socket.emit("logout");   // <--- tell backend instantly
     }

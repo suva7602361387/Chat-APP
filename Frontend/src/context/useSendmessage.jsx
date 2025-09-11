@@ -34,7 +34,7 @@ const useSendMessage = () => {
       }
 
       // ✅ API request
-      const res = await axios.post(`${process.env.VITE_BACKEND_URL}/api/v1/messages/sendmessage`, formData, {
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/messages/sendmessage`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });

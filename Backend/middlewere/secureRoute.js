@@ -4,7 +4,8 @@ const User = require("../models/user.model");
 
 exports.secureRoute = async (req, res, next) => {
   try {
-    const token = req.cookies.token; // ✅ Use the correct cookie name
+    const token = req.headers.authorization.substring(8,req.headers.authorization.length-1); // ✅ Use the correct cookie name
+    console.log("Hla",req.headers.authorization.substring(8,req.headers.authorization.length-1))
     if (!token) {
       return res.status(401).json({ error: "No token, authorization denied" });
     }

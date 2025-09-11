@@ -9,9 +9,9 @@ function UseGetAllUser() {
     const getUsers = async () => {
       setLoading(true);
       try {
-        const token = Cookies.get("token");
+        const token = localStorage.getItem("ChatApp");
         console.log("This is token",token);
-        const response = await axios.get(`${process.env.VITE_BACKEND_URL}/api/v1/users/getuserProfile`, {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/getuserProfile`, {
           credentials: "include",
           headers: {
             Authorization: `Bearer ${token}`,

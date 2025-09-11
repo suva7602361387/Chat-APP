@@ -6,7 +6,7 @@ import { useAuth } from "./AuthProvider";
 const SocketContext = createContext();
 export const useSocketContext = () => useContext(SocketContext);
 
-// const URL = process.env.VITE_BACKEND_URL;
+const URL = import.meta.env.VITE_BACKEND_URL;
 
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
@@ -15,7 +15,7 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (authUser?.user?._id) {
-      const newSocket = io("https://chat-app-4ors.onrender.com", {
+      const newSocket = io(URL, {
         query: { userId: authUser.user._id }, // ✅ send userId here
         withCredentials: true,
       });

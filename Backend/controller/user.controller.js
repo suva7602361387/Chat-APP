@@ -7,7 +7,7 @@ const otpGenerator = require("otp-generator");
 const mailSender = require("../utils/mailsender");
 //const { default: User } = require("../../Frontend/src/home/left/User");
 const cloudinary = require("cloudinary").v2;
-const {generateStreamToken}=require("../config/stream")
+const { generateStreamToken } = require("../config/stream");
 
 require("dotenv").config();
 
@@ -141,9 +141,12 @@ exports.login = async (req, res) => {
     user.password = undefined;
 
     const options = {
-      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-      httpOnly: true,
-    };
+  expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days
+  httpOnly: true,      // ✅ keep safe from XSS
+  secure: false,       // ❌ HTTPS not needed on localhost
+  sameSite: "lax",     // ✅ works better during dev than "strict"
+};
+
 
     return res
       .cookie("token", token, options)
@@ -213,30 +216,30 @@ exports.updateProfile = async (req, res) => {
     }
 
     const updatedUser = await User.findByIdAndUpdate(
-  userId,
-  {
-    firstname: firstname || UserExist.firstname,
-    lastname: lastname || UserExist.lastname,
-    about: about || UserExist.about,
-    profilepic: profilePicUrl,
-  },
-  { new: true }
-).lean(); // ✅ already plain object
+      userId,
+      {
+        firstname: firstname || UserExist.firstname,
+        lastname: lastname || UserExist.lastname,
+        about: about || UserExist.about,
+        profilepic: profilePicUrl,
+      },
+      { new: true }
+    ).lean(); // ✅ already plain object
 
-// no need for .save()
+    // no need for .save()
 
-if (req.io) {
-  req.io.emit("profileUpdated", {
-    userId: updatedUser._id.toString(),
-    updatedUser: {
-      _id: updatedUser._id.toString(),
-      firstname: updatedUser.firstname,
-      lastname: updatedUser.lastname,
-      about: updatedUser.about,
-      profilepic: updatedUser.profilepic,
-    },
-  });
-}
+    if (req.io) {
+      req.io.emit("profileUpdated", {
+        userId: updatedUser._id.toString(),
+        updatedUser: {
+          _id: updatedUser._id.toString(),
+          firstname: updatedUser.firstname,
+          lastname: updatedUser.lastname,
+          about: updatedUser.about,
+          profilepic: updatedUser.profilepic,
+        },
+      });
+    }
 
     res.json({
       success: true,
@@ -322,19 +325,19 @@ exports.getuserProfile = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-exports.getStreamToken=async (req,res)=>{
-   try {
+exports.getStreamToken = async (req, res) => {
+  try {
     //console.log("API key (backend):", apiKey);
     console.log("Token created for user ID:", req.user.id);
 
     const token = generateStreamToken(req.user.id);
 
     res.status(200).json({ token });
-  //   const userId = req.user.id; // from your auth middleware
-  // const token = client.createToken(userId);
-  // res.json({ token });
+    //   const userId = req.user.id; // from your auth middleware
+    // const token = client.createToken(userId);
+    // res.json({ token });
   } catch (error) {
     console.log("Error in getStreamToken controller:", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
-}
+};
