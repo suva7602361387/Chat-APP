@@ -19,7 +19,7 @@ import "@stream-io/video-react-sdk/dist/css/styles.css";
 
 axios.defaults.timeout = 15000; // global 15s timeout
 
-const STREAM_API_KEY = process.env.VITE_STREAM_API_KEY
+const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY
 
 function CallPage() {
 const { id: rawCallId } = useParams();

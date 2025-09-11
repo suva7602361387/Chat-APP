@@ -9,7 +9,7 @@ import CallButton from "./Callbutton";
 import { StreamChat } from "stream-chat";
 import toast from "react-hot-toast";
 
-const STREAM_API_KEY = process.env.VITE_STREAM_API_KEY
+const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY
 
 function Chatuser() {
   const { selectedReceverId } = useConversation();

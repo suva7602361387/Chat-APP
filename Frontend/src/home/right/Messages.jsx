@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import Message from "./Message";
-import useGetMessage from "../../context/useGetMessages";
 import useGetSocketMessage from "../../context/useGetSocketMessage"; // ✅
 import Loading from "../../components/Loading";
 import { useSocketContext } from "../../context/socketcontext";
 import { useAuth } from "../../context/AuthProvider";
+import useGetMessage from "../../context/useGetMessages";
 
 function Messages() {
   const { loading, messages, setMessage } = useGetMessage();

@@ -28,3 +28,4 @@ const useGetMessage = () => {
 
   return { loading, messages, setMessage };
 };
+export default useGetMessage

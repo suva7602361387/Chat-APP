@@ -6,7 +6,7 @@ import { useAuth } from "./AuthProvider";
 const SocketContext = createContext();
 export const useSocketContext = () => useContext(SocketContext);
 
-const URL = process.env.VITE_BACKEND_URL;
+// const URL = process.env.VITE_BACKEND_URL;
 
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
