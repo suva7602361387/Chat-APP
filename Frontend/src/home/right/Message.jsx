@@ -13,7 +13,8 @@ function Message({ message }) {
   const { socket } = useSocketContext();
   const [authUser] = useAuth();
   const { selectedReceverId } = useConversation();
-
+  console.log("This is mesage:",message),
+  console.log("This is auth:",authUser);
   const itsMe = message.senderId?._id === authUser?.user?._id;
   const chatName = itsMe ? "chat-end" : "chat-start";
   const chatColor = itsMe ? "bg-blue-500" : "bg-gray-700";

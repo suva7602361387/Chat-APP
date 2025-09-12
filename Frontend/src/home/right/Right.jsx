@@ -15,6 +15,7 @@ function Right() {
   useEffect(() => {
     return setSelectedReceverId(null);
   }, [setSelectedReceverId]);
+  console.log(selectedReceverId);
    return (
     <div className="w-full bg-slate-900 text-gray-300">
       <div>
@@ -41,31 +42,30 @@ export default Right;
 
 const NoChatSelected = () => {
   const [authUser] = useAuth();
-  console.log("hello",authUser);
+  console.log("this is auth:",authUser)
+  if (!authUser || !authUser.user) {
+    return <Loading />; // or just return null / "Loading..."
+  }
+
   return (
-    <>
-      <div className="relative">
-        <label
-          htmlFor="my-drawer-2"
-          className="btn btn-ghost drawer-button lg:hidden absolute left-5"
-        >
-          <CiMenuFries className="text-white text-xl" />
-        </label>
-        <div className="flex h-screen items-center justify-center">
-          <h1 className="text-center">
-            Welcome{" "}
-            <span className="font-semibold text-xl">
-              {authUser.user.firstname }
-              <span>
-                {authUser.user.lastname}
-              </span>
-            </span>
-            <br />
-            No chat selected, please start conversation by selecting anyone to
-            your contacts
-          </h1>
-        </div>
+    <div className="relative">
+      <label
+        htmlFor="my-drawer-2"
+        className="btn btn-ghost drawer-button lg:hidden absolute left-5"
+      >
+        <CiMenuFries className="text-white text-xl" />
+      </label>
+      <div className="flex h-screen items-center justify-center">
+        <h1 className="text-center">
+          Welcome{" "}
+          <span className="font-semibold text-xl">
+            {authUser.user.firstname} <span>{authUser.user.lastname}</span>
+          </span>
+          <br />
+          No chat selected, please start conversation by selecting anyone to
+          your contacts
+        </h1>
       </div>
-    </>
+    </div>
   );
 };

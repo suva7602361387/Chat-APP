@@ -140,12 +140,13 @@ exports.login = async (req, res) => {
     user.token = token;
     user.password = undefined;
 
-    const options = {
+   const options = {
   expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days
-  httpOnly: true,      // ✅ keep safe from XSS
-  secure: false,       // ❌ HTTPS not needed on localhost
-  sameSite: "lax",     // ✅ works better during dev than "strict"
+  httpOnly: true,   // can’t access via JS
+  secure: false,    // false is fine for localhost (must be true in production/https)
+  sameSite: "Lax",  // Lax is okay if both frontend/backend run on localhost
 };
+
 
 
     return res

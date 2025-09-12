@@ -10,7 +10,7 @@ function Messages() {
   const { loading, messages, setMessage } = useGetMessage();
   useGetSocketMessage(); // ✅ live socket updates
   const lastMsgRef = useRef();
-
+  console.log("jhjker:",messages?.length);
   const { socket } = useSocketContext();
   const [authUser] = useAuth();
 
@@ -64,9 +64,10 @@ return (
     {loading ? (
       <Loading />
     ) : Array.isArray(messages) && messages.length > 0 ? (
-      messages.map((msg) => (
-        <Message key={msg._id || msg.id} data={msg} />
-      ))
+     messages.map((msg,index) => (
+  <Message key={msg._id || msg.id || index} message={msg} />   // 👈 send as message
+))
+
     ) : (
       <p className="text-center mt-[20%] text-gray-400">
         Say Hi to start the conversation

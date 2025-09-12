@@ -2,6 +2,8 @@
 import io from "socket.io-client";
 import { createContext, useState, useEffect, useContext } from "react";
 import { useAuth } from "./AuthProvider";
+import {jwtDecode} from "jwt-decode";
+
 
 const SocketContext = createContext();
 export const useSocketContext = () => useContext(SocketContext);
@@ -12,7 +14,7 @@ export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [authUser] = useAuth();
-
+ 
   useEffect(() => {
     if (authUser?.user?._id) {
       const newSocket = io(URL, {

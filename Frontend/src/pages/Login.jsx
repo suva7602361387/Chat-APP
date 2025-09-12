@@ -23,14 +23,18 @@ function Login() {
     };
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/login`, userInfo);
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/login`, userInfo
+        ,
+         { withCredentials: true } 
+      );
 
       if (response.data) {
         toast.success("Login successful");
-        localStorage.setItem("ChatApp", JSON.stringify(response.data.token));
+        localStorage.setItem("ChatApp", JSON.stringify(response.data));
+        console.log("This is res:",response.data);
         setAuthUser(response.data);
         toast.success("User login done")
-
+        console.log("This is auth:",authUser);
         navigate("/chat-page")
         
         

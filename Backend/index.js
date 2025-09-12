@@ -25,7 +25,8 @@ app.use(
 const corsOptions = {
     origin: process.env.FRONTENT_URL, // Allow only requests from this origin
     methods: ['GET','POST','DELETE','PATCH','PUT'], // Allow only these methods
-    allowedHeaders: ['Content-Type', 'Authorization'] // Allow only these headers
+    allowedHeaders: ['Content-Type', 'Authorization'] ,// Allow only these headers
+    credentials: true,
 };
 
 app.use(express.json({ limit: "20mb" }));
