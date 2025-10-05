@@ -21,6 +21,7 @@ app.use(
     tempFileDir: "/tmp/", // system tmp folder
   })
 );
+app.use(cookieParser());
 
 const corsOptions = {
     origin: process.env.FRONTENT_URL, // Allow only requests from this origin
@@ -32,7 +33,6 @@ const corsOptions = {
 app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ limit: "20mb", extended: true }));
 app.use(cors(corsOptions));
-app.use(cookieParser());
 
 // ✅ DB + Cloudinary
 connectwithDB();

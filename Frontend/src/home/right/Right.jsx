@@ -15,7 +15,7 @@ function Right() {
   useEffect(() => {
     return setSelectedReceverId(null);
   }, [setSelectedReceverId]);
-  console.log(selectedReceverId);
+  //console.log(selectedReceverId);
    return (
     <div className="w-full bg-slate-900 text-gray-300">
       <div>

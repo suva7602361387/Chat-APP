@@ -18,7 +18,7 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     if (authUser?.user?._id) {
       const newSocket = io(URL, {
-        query: { userId: authUser.user._id }, // ✅ send userId here
+        query: { userId: authUser.user._id }, 
         withCredentials: true,
       });
 

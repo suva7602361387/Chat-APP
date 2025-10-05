@@ -4,12 +4,13 @@ const User = require("../models/user.model");
 exports.secureRoute = async (req, res, next) => {
   try {
     // 1. Get token from cookie or Authorization header
+         console.log("This is token1:",req.cookies);
+
     const token =
       req.cookies?.token || // from cookie
       (req.headers.authorization?.startsWith("Bearer ")
         ? req.headers.authorization.split(" ")[1]
         : null);
-
     if (!token) {
       return res.status(401).json({ error: "No token, authorization denied" });
     }

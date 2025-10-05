@@ -10,7 +10,7 @@ function Messages() {
   const { loading, messages, setMessage } = useGetMessage();
   useGetSocketMessage(); // ✅ live socket updates
   const lastMsgRef = useRef();
-  console.log("jhjker:",messages?.length);
+  //console.log("jhjker:",messages?.length);
   const { socket } = useSocketContext();
   const [authUser] = useAuth();
 
@@ -54,7 +54,7 @@ if (unreadMessageIds.length > 0 && socket) {
   );
 }
 
-    console.log("🖥️ Rendering messages:", messages);
+    //console.log("🖥️ Rendering messages:", messages);
   }, [messages, authUser, socket, setMessage]);
 return (
   <div

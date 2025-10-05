@@ -18,9 +18,9 @@ function Chatuser() {
   const [channel, setChannel] = useState(null);
   const { sendMessages } = useSendMessage();
   const [authUser] = useAuth();
-  console.log("This is auth:", authUser);
-  console.log("This is receber:", selectedReceverId);
-
+  // console.log("This is auth:", authUser);
+  // console.log("This is receber:", selectedReceverId);
+   
   const { data: tokenData } = useQuery({
     queryKey: ["streamToken"],
     queryFn: getStreamToken,
@@ -30,10 +30,14 @@ function Chatuser() {
   // ✅ Initialize Stream Chat
   useEffect(() => {
     const initChat = async () => {
-  if (!tokenData?.token || !authUser || !selectedReceverId) return;
+          console.log("this is recever:",tokenData);
+          console.log("this is recever:",authUser);
 
+  if (!tokenData?.token || !authUser || !selectedReceverId) return;
+  
   try {
     const client = StreamChat.getInstance(STREAM_API_KEY);
+              console.log("hhke:",tokenData);
 
     await client.connectUser(
       {
@@ -45,16 +49,17 @@ function Chatuser() {
     );
 
     // ⚡ Ensure receiver exists in Stream (needs backend ideally)
-    await client.upsertUser({
-      id: selectedReceverId._id,
-      name: selectedReceverId.firstname,
-      image: selectedReceverId.profilepic,
-    });
+    // await client.upsertUser({
+    //   id: selectedReceverId._id,
+    //   name: selectedReceverId.firstname,
+    //   image: selectedReceverId.profilepic,
+    // });
 
     const channelId = [authUser?.user?._id, selectedReceverId._id].sort().join("-");
     const currChannel = client.channel("messaging", channelId, {
       members: [authUser?.user?._id, selectedReceverId._id],
     });
+    console.log("This is chennel:",currChannel);
 
     await currChannel.watch();
     setChatClient(client);
@@ -67,13 +72,20 @@ function Chatuser() {
 
 
     initChat();
-  }, [tokenData, authUser]);
+  }, [tokenData, authUser,selectedReceverId]);
 
   const handleVideoCall = async () => {
-  if (!channel) {
+    try {
+       if (!channel) {
     toast.error("Chat channel not ready yet!");
     return;
   }
+      
+    } catch (error) {
+      console.log("This error:",error);
+      
+    }
+ 
 
   // ✅ Check if receiver is online before sending
   const isReceiverOnline = onlineUsers.some(
@@ -129,7 +141,7 @@ function Chatuser() {
   };
 
   const isOnline = onlineUsers.some((u) => u._id === selectedReceverId._id);
-  console.log("onlineUsers:", onlineUsers);
+  //console.log("onlineUsers:", onlineUsers);
 
   const getUserStatus = (user) => {
     if (isTyping) return "Typing… ✍️";

@@ -43,7 +43,7 @@ const useSendMessage = () => {
         const newMsg = res.data.data;
 
         // ✅ Optimistic update in UI
-        setMessage((prev) => [...prev, newMsg]);
+        //setMessage((prev) => [...prev, newMsg]);
 
         // ✅ Emit socket event so the receiver gets it instantly
         if (socket) {
