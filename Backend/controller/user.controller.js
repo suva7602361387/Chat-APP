@@ -142,9 +142,10 @@ exports.login = async (req, res) => {
 
    const options = {
   expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days
+  secure: true,         // ✅ Required for HTTPS
+  sameSite: "None",     // ✅ Required for cross-site
   httpOnly: true,   // can’t access via JS
-  secure: false,    // false is fine for localhost (must be true in production/https)
-  sameSite: "Lax",  // Lax is okay if both frontend/backend run on localhost
+  //sameSite: "Lax",  // Lax is okay if both frontend/backend run on localhost
 };
 
 
