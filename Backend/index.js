@@ -24,8 +24,8 @@ app.use(
 app.use(cookieParser());
 
 const corsOptions = {
-   // origin: process.env.FRONTENT_URL, // Allow only requests from this origin
-   origin:"https://chat-app-nu-liard-37.vercel.app/",
+    origin: process.env.FRONTENT_URL, // Allow only requests from this origin
+   //origin:"https://chat-app-nu-liard-37.vercel.app/",
     methods: ['GET','POST','DELETE','PATCH','PUT'], // Allow only these methods
     allowedHeaders: ['Content-Type', 'Authorization'] ,// Allow only these headers
     credentials: true,
