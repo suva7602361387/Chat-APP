@@ -4,7 +4,7 @@ const User = require("../models/user.model");
 exports.secureRoute = async (req, res, next) => {
   try {
     // 1. Get token from cookie or Authorization header
-         console.log("This is token1:",req.cookies);
+         console.log("This is token1:",req.cookies.token);
 
     const token =
       req.cookies?.token || // from cookie
