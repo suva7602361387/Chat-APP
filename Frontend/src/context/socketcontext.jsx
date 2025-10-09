@@ -25,7 +25,7 @@ export const SocketProvider = ({ children }) => {
       setSocket(newSocket);
 
       newSocket.on("getOnlineUsers", (users) => {
-          console.log("📡 Online users from server:", users);
+          //console.log("📡 Online users from server:", users);
 
         setOnlineUsers(users);
       });

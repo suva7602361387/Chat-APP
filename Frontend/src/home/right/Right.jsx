@@ -42,7 +42,7 @@ export default Right;
 
 const NoChatSelected = () => {
   const [authUser] = useAuth();
-  console.log("this is auth:",authUser)
+ // console.log("this is auth:",authUser)
   if (!authUser || !authUser.user) {
     return <Loading />; // or just return null / "Loading..."
   }

@@ -24,14 +24,14 @@ const useGetMessage = () => {
           },
           }
         );
-                           console.log("this is mes",res.data);
+                       //    console.log("this is mes",res.data);
 
         // ✅ Always extract array safely
         // const fetchedMessages = res.data?.message ;
           const fetchedMessages = Array.isArray(res.data) ? res.data : [];
 
         setMessage(fetchedMessages);
-                console.log("this is mes",fetchedMessages);
+            //    console.log("this is mes",fetchedMessages);
 
       } catch (error) {
         console.log(error);

@@ -13,7 +13,7 @@ function UseGetAllUser() {
       try {
         //const token = localStorage.getItem("ChatApp");
         const token=authUser.token;
-        console.log("This is token",authUser.token);
+       // console.log("This is token",authUser.token);
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/getuserProfile`, {
           credentials: "include",
           headers: {
