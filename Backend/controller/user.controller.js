@@ -141,10 +141,14 @@ exports.login = async (req, res) => {
     user.password = undefined;
 
    const options = {
-  expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days
-  secure: true,         // ✅ Required for HTTPS
-  sameSite: "None",     // ✅ Required for cross-site
-  httpOnly: true,   // can’t access via JS
+     httpOnly: true,
+      secure: true,      // ✅ required in HTTPS (Render)
+      sameSite: "None",  // ✅ required for cross-origin
+      maxAge: 3 * 24 * 60 * 60 * 1000,
+  // expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days
+  // secure: true,         // ✅ Required for HTTPS
+  // sameSite: "None",     // ✅ Required for cross-site
+  // httpOnly: true,   // can’t access via JS
   //sameSite: "Lax",  // Lax is okay if both frontend/backend run on localhost
 };
 

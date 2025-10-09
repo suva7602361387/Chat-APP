@@ -21,7 +21,6 @@ app.use(
     tempFileDir: "/tmp/", // system tmp folder
   })
 );
-app.use(cookieParser());
 
 const corsOptions = {
     origin:"https://chat-app-nu-liard-37.vercel.app", // Allow only requests from this origin
@@ -31,9 +30,16 @@ const corsOptions = {
     credentials: true,
 };
 
+// app.use(express.json({ limit: "20mb" }));
+// app.use(express.urlencoded({ limit: "20mb", extended: true }));
+// app.use(cors(corsOptions));
+// app.use(cookieParser());
+app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ limit: "20mb", extended: true }));
-app.use(cors(corsOptions));
+
+
 
 // ✅ DB + Cloudinary
 connectwithDB();
