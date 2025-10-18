@@ -18,9 +18,8 @@ function Chatuser() {
   const [channel, setChannel] = useState(null);
   const { sendMessages } = useSendMessage();
   const [authUser] = useAuth();
-   console.log("This is auth:", STREAM_API_KEY);
-   console.log("This is receber:", selectedReceverId);
-   console.log("hgjsd");
+   //console.log("This is auth:", STREAM_API_KEY);
+   //console.log("This is receber:", selectedReceverId);
   const { data: tokenData } = useQuery({
     queryKey: ["streamToken"],
     queryFn: getStreamToken,
@@ -30,8 +29,8 @@ function Chatuser() {
   // ✅ Initialize Stream Chat
   useEffect(() => {
     const initChat = async () => {
-          // console.log("this is recever:",tokenData);
-          // console.log("this is recever:",authUser);
+          console.log("this is tokenData:",tokenData);
+          console.log("this is authUser:",authUser);
 
   if (!tokenData?.token || !authUser || !selectedReceverId) return;
   
