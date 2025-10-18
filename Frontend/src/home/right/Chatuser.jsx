@@ -36,7 +36,7 @@ function Chatuser() {
   
   try {
     const client = StreamChat.getInstance(STREAM_API_KEY);
-              console.log("this is tokenData:",tokenData);
+              console.log("this is tokenData:",client);
          console.log("this is authUser:",authUser);
 
     await client.connectUser(
