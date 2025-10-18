@@ -58,7 +58,7 @@ function Chatuser() {
     const currChannel = client.channel("messaging", channelId, {
       members: [authUser?.user?._id, selectedReceverId._id],
     });
-    //console.log("This is chennel:",currChannel);
+    console.log("This is chennel:",currChannel);
 
     await currChannel.watch();
     setChatClient(client);
