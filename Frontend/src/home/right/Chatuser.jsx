@@ -37,6 +37,7 @@ function Chatuser() {
   try {
     const client = StreamChat.getInstance(STREAM_API_KEY);
               console.log("this is tokenData:",tokenData);
+         console.log("this is authUser:",authUser);
 
     await client.connectUser(
       {
@@ -46,7 +47,6 @@ function Chatuser() {
       },
       tokenData.token
     );
-     console.log("this is tokenData:",tokenData);
 
     // ⚡ Ensure receiver exists in Stream (needs backend ideally)
     // await client.upsertUser({
