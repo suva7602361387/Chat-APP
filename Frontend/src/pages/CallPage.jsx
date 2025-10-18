@@ -28,7 +28,7 @@ const callId = rawCallId?.replace(/[^a-zA-Z0-9_-]/g, "");
   const [client, setClient] = useState(null);
   const [call, setCall] = useState(null);
   const [isConnecting, setIsConnecting] = useState(true);
-
+  console.log("This API key:",STREAM_API_KEY);
   // Fetch token from backend
   const getStreamToken = async () => {
     const res = await axios.get(`${process.env.VITE_BACKEND_URL}/api/v1/users/token`);
