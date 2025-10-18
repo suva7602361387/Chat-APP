@@ -18,7 +18,7 @@ function Chatuser() {
   const [channel, setChannel] = useState(null);
   const { sendMessages } = useSendMessage();
   const [authUser] = useAuth();
-  // console.log("This is auth:", authUser);
+   console.log("This is auth:", STREAM_API_KEY);
   // console.log("This is receber:", selectedReceverId);
    
   const { data: tokenData } = useQuery({
