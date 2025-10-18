@@ -46,6 +46,7 @@ function Chatuser() {
       },
       tokenData.token
     );
+     console.log("this is tokenData:",tokenData);
 
     // ⚡ Ensure receiver exists in Stream (needs backend ideally)
     // await client.upsertUser({
