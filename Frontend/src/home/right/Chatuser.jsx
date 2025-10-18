@@ -19,7 +19,7 @@ function Chatuser() {
   const { sendMessages } = useSendMessage();
   const [authUser] = useAuth();
    console.log("This is auth:", STREAM_API_KEY);
-  // console.log("This is receber:", selectedReceverId);
+   console.log("This is receber:", selectedReceverId);
    
   const { data: tokenData } = useQuery({
     queryKey: ["streamToken"],
