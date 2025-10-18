@@ -20,7 +20,7 @@ function Chatuser() {
   const [authUser] = useAuth();
    console.log("This is auth:", STREAM_API_KEY);
    console.log("This is receber:", selectedReceverId);
-   
+   console.log("hgjsd");
   const { data: tokenData } = useQuery({
     queryKey: ["streamToken"],
     queryFn: getStreamToken,
