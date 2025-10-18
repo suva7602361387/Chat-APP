@@ -25,6 +25,7 @@ app.use(
 const corsOptions = {
     origin:"https://chat-app-nu-liard-37.vercel.app", // Allow only requests from this origin
    //origin:"https://chat-app-nu-liard-37.vercel.app/",
+   //origin:"http://localhost:5173/",
     methods: ['GET','POST','DELETE','PATCH','PUT'], // Allow only these methods
     allowedHeaders: ['Content-Type', 'Authorization'] ,// Allow only these headers
     credentials: true,

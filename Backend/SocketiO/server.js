@@ -7,7 +7,7 @@ require("dotenv").config();
 
 const onlineuser = new Map();
 const typinguser = new Map();
-const BASE_URL=process.env.FRONTENT_URL;;
+const BASE_URL=process.env.FRONTENT_URL;
 const initilizeSocket = (server) => {
   const io = new Server(server, {
     cors: {
