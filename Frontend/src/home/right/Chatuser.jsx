@@ -29,14 +29,14 @@ function Chatuser() {
   // ✅ Initialize Stream Chat
   useEffect(() => {
     const initChat = async () => {
-          console.log("this is tokenData:",tokenData);
-          console.log("this is authUser:",authUser);
+          // console.log("this is tokenData:",tokenData);
+          // console.log("this is authUser:",authUser);
 
   if (!tokenData?.token || !authUser || !selectedReceverId) return;
   
   try {
     const client = StreamChat.getInstance(STREAM_API_KEY);
-              //console.log("hhke:",tokenData);
+              console.log("hhke:",tokenData);
 
     await client.connectUser(
       {
