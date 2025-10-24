@@ -41,6 +41,7 @@ const callId = rawCallId?.replace(/[^a-zA-Z0-9_-]/g, "");
   queryFn: () => getStreamToken(authUser),    // ✅ pass authUser properly
     enabled: !!authUser, // only fetch if user exists
   });
+console.log("Token received from backend:", tokenData?.token);
 
   useEffect(() => {
     const initCall = async () => {
