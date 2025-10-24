@@ -15,18 +15,18 @@ export const getAuthUser = async () => {
     return null;
   }
 };
-export async function getStreamToken() {
+export async function getStreamToken(authUser) {
   try {
     const response = await axios.get(
       `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/token`,
       {
-        // headers: {
-        //   Authorization: `Bearer ${authUser?.token}`,
-        // },
+        headers: {
+          Authorization: `Bearer ${authUser?.token}`,
+        },
         withCredentials: true,
       }
     );
-    return response.data;
+    return response.data; // should contain { token: "..." }
   } catch (error) {
     console.log("Error in getStreamToken:", error);
     throw error;
