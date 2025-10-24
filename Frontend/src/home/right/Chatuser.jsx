@@ -19,14 +19,15 @@ function Chatuser() {
   const { sendMessages } = useSendMessage();
   const [authUser] = useAuth();
    //console.log("This is auth:", STREAM_API_KEY);
-   //console.log("This is receber:", selectedReceverId);
+   console.log("This is authUser:", authUser);
+
   const { data: tokenData } = useQuery({
     queryKey: ["streamToken"],
   queryFn: () => getStreamToken(authUser),    // ✅ pass authUser properly
     enabled: !!authUser,
   });
    console.log("Stream API Key (frontend):", import.meta.env.VITE_STREAM_API_KEY);
-console.log("Token received from backend:", tokenData.token);
+console.log("Token received from backend:", tokenData?.token);
 
   // ✅ Initialize Stream Chat
   useEffect(() => {
