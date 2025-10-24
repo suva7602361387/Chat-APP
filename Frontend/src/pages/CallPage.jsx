@@ -34,6 +34,7 @@ const callId = rawCallId?.replace(/[^a-zA-Z0-9_-]/g, "");
     const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/token`);
     return res.data;
   };
+    console.log("This API key:",getStreamToken);
 
   const { data: tokenData, isLoading: tokenLoading } = useQuery({
     queryKey: ["streamToken"],

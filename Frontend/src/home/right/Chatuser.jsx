@@ -25,6 +25,8 @@ function Chatuser() {
     queryFn: getStreamToken,
     enabled: !!authUser,
   });
+   console.log("Stream API Key (frontend):", import.meta.env.VITE_STREAM_API_KEY);
+console.log("Token received from backend:", tokenData.token);
 
   // ✅ Initialize Stream Chat
   useEffect(() => {
@@ -36,7 +38,7 @@ function Chatuser() {
   
   try {
     const client = StreamChat.getInstance(STREAM_API_KEY);
-              console.log("this is client:",client);
+          console.log("this is client:",client);
          console.log("this is authUser:",authUser);
 
     await client.connectUser(
