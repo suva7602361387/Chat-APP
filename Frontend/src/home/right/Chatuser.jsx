@@ -26,7 +26,7 @@ function Chatuser() {
   queryFn: () => getStreamToken(authUser),    // ✅ pass authUser properly
     enabled: !!authUser,
   });
-   console.log("Stream API Key (frontend):", STREAM_API_KEY);
+   console.log("Stream API Key (frontend):", STREAM_API_KEY) 
 console.log("Token received from backend:", tokenData?.token);
 
   // ✅ Initialize Stream Chat
