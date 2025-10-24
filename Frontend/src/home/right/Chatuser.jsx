@@ -22,7 +22,7 @@ function Chatuser() {
    //console.log("This is receber:", selectedReceverId);
   const { data: tokenData } = useQuery({
     queryKey: ["streamToken"],
-    queryFn: getStreamToken,
+  queryFn: () => getStreamToken(authUser),    // ✅ pass authUser properly
     enabled: !!authUser,
   });
    console.log("Stream API Key (frontend):", import.meta.env.VITE_STREAM_API_KEY);

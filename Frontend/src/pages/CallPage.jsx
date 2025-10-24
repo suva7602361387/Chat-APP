@@ -38,7 +38,7 @@ const callId = rawCallId?.replace(/[^a-zA-Z0-9_-]/g, "");
 
   const { data: tokenData, isLoading: tokenLoading } = useQuery({
     queryKey: ["streamToken"],
-    queryFn: getStreamToken,
+  queryFn: () => getStreamToken(authUser),    // ✅ pass authUser properly
     enabled: !!authUser, // only fetch if user exists
   });
 
