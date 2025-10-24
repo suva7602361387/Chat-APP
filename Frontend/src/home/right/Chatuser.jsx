@@ -9,7 +9,7 @@ import CallButton from "./Callbutton";
 import { StreamChat } from "stream-chat";
 import toast from "react-hot-toast";
 
-const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY
+const STREAM_API_KEY ="atsp87b75np3"
 
 function Chatuser() {
   const { selectedReceverId } = useConversation();
@@ -26,7 +26,7 @@ function Chatuser() {
   queryFn: () => getStreamToken(authUser),    // ✅ pass authUser properly
     enabled: !!authUser,
   });
-   console.log("Stream API Key (frontend):", import.meta.env.VITE_STREAM_API_KEY);
+   console.log("Stream API Key (frontend):", STREAM_API_KEY);
 console.log("Token received from backend:", tokenData?.token);
 
   // ✅ Initialize Stream Chat
