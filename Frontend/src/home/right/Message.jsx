@@ -67,7 +67,7 @@ function Message({ message }) {
   const handleDelete = async (messageId) => {
     try {
       const res = await axios.delete(
-        `/api/v1/messages/deletemeseges/${messageId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/messages/deletemeseges/${messageId}`,
         {
           withCredentials: true,
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

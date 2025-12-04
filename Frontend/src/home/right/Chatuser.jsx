@@ -92,8 +92,7 @@ function Chatuser() {
 
   if (!selectedReceverId) return null;
 
-  const defaultAvatar =
-    "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+  const defaultAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
   const isOnline = onlineUsers.some((u) => u._id === selectedReceverId._id);
 
@@ -141,7 +140,6 @@ function Chatuser() {
 
   return (
     <div className="sticky top-0 z-20 flex items-center justify-between px-5 py-3 bg-gray-800 border-b border-gray-700 shadow-lg">
-
       {/* Avatar + Online Dot */}
       <div className="flex items-center gap-3">
         <div className="relative">
@@ -151,11 +149,10 @@ function Chatuser() {
             className="w-12 h-12 rounded-full border-2 border-gray-300"
           />
           <span
-  className={`absolute bottom-1 right-1 w-3 h-3 rounded-full ${
-    isOnline ? "bg-green-500" : "bg-white"
-  }`}
-></span>
-
+            className={`absolute bottom-1 right-1 w-3 h-3 rounded-full ${
+              isOnline ? "bg-green-500" : "bg-white"
+            }`}
+          ></span>
         </div>
 
         {/* Name + Status */}

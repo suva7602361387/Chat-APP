@@ -71,7 +71,7 @@ function Profile() {
       }
 
       const response = await axios.post(
-        `http://localhost:7000/api/v1/users/update-profile`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/update-profile`,
         {
           firstname,
           lastname,

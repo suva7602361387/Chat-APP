@@ -39,7 +39,7 @@ function Signup() {
     setSignupData(userInfo);
 
     try {
-      const response = await axios.post(`http://localhost:7000/api/v1/users/sendotp`, {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/sendotp`, {
         email: userInfo.email,
       });
       // const response=await apiConnector("POST",SENDOTP_API,{

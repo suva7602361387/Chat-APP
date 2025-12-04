@@ -33,7 +33,7 @@ function CallPage() {
 
   // Fetch Stream server token
   const getStreamToken = async () => {
-    const res = await axios.get(`${BACKEND_URL}/api/v1/users/token`, {
+    const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/token`, {
       withCredentials: true,
     });
     return res.data;
