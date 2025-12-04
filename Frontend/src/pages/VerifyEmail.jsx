@@ -27,7 +27,7 @@ const [authUser, setAuthUser, signupData, setSignupData] = useAuth();
     const { firstname, lastname, email, password, confirmPassword, PhoneNumber } = signupData;
 
     try {
-      const response = await axios.post(`http://localhost:7000/api/v1/users/signup`, {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/signup`, {
         firstname,
         lastname,
         email,
