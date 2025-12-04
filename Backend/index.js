@@ -23,7 +23,7 @@ app.use(
 );
 
 const corsOptions = {
-    origin:"http://localhost:5173",
+    origin:"https://chat-app-eight-gamma-15.vercel.app",
     methods: ['GET','POST','DELETE','PATCH','PUT'], // Allow only these methods
     allowedHeaders: ['Content-Type', 'Authorization'] ,// Allow only these headers
     credentials: true,
