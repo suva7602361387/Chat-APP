@@ -259,10 +259,18 @@ exports.sendmessage = async (req, res) => {
       });
     }
 
-    if (!file && (!message || !message.trim())) {
+    // ✅ Validate ObjectId format
+    if (!mongoose.Types.ObjectId.isValid(senderId) || !mongoose.Types.ObjectId.isValid(receiverId)) {
       return res.status(400).json({
         success: false,
-        message: "Message content is required",
+        message: "Invalid senderId or receiverId format",
+      });
+    }
+
+    if (!file && (!message || !message.trim()) && !videocallurl) {
+      return res.status(400).json({
+        success: false,
+        message: "Message content, file, or video call URL is required",
       });
     }
 
@@ -271,6 +279,8 @@ exports.sendmessage = async (req, res) => {
     // ============================
     if (file) {
       try {
+        console.log("📤 Uploading file to Cloudinary...");
+        
         const uploaded = await cloudinary.uploader.upload(file.tempFilePath, {
           folder: "Chat-App",
           resource_type: "auto",
@@ -284,13 +294,14 @@ exports.sendmessage = async (req, res) => {
         }
 
         mediaUrl = uploaded.secure_url;
+        console.log("✅ File uploaded:", mediaUrl);
 
         if (file.mimetype.startsWith("image")) messageType = "image";
         else if (file.mimetype.startsWith("video")) messageType = "video";
         else {
           return res.status(400).json({ 
             success: false, 
-            message: "Unsupported file type" 
+            message: "Unsupported file type. Only images and videos are allowed." 
           });
         }
       } catch (uploadError) {
@@ -298,6 +309,7 @@ exports.sendmessage = async (req, res) => {
         return res.status(500).json({
           success: false,
           message: "Failed to upload file to cloud storage",
+          error: uploadError.message
         });
       }
     }
@@ -310,6 +322,7 @@ exports.sendmessage = async (req, res) => {
     });
 
     if (!conversation) {
+      console.log("📝 Creating new conversation...");
       conversation = await Conversation.create({
         members: [senderId, receiverId],
         messages: [],
@@ -327,55 +340,70 @@ exports.sendmessage = async (req, res) => {
       conversation: conversation._id,
       senderId,
       receiverId,
-      message: message || "",
+      message: message?.trim() || "",
       imageOrVideoUrl: mediaUrl,
-      videocallurl: videocallurl || null,
+      videocallurl: videocallurl?.trim() || null,
       messageType,
       messageStatus: messageStatus || "sent",
     });
 
-    // Push to conversation
+    console.log("✅ Message created:", newMessage._id);
+
+    // ============================
+    // UPDATE CONVERSATION
+    // ============================
     conversation.messages.push(newMessage._id);
     conversation.lastMessage = newMessage._id;
+    conversation.updatedAt = new Date(); // Update timestamp
 
     // ============================
-    // UPDATE UNREAD COUNT
+    // UPDATE UNREAD COUNT (Fix the logic)
     // ============================
+    // The RECEIVER should have their unread count increased, not decreased
     let receiverUnread = conversation.unreadCount.find(
-      (u) => u.user.toString() === receiverId
+      (u) => u.user.toString() === receiverId.toString()
     );
 
-    if (!receiverUnread) {
-      conversation.unreadCount.push({ user: receiverId, count: 1 });
-    } else {
+    if (receiverUnread) {
       receiverUnread.count += 1;
+    } else {
+      conversation.unreadCount.push({ user: receiverId, count: 1 });
     }
 
     await conversation.save();
+    console.log("✅ Conversation updated");
 
     // ============================
     // POPULATE MESSAGE FOR RESPONSE
     // ============================
     const populatedMessage = await Message.findById(newMessage._id)
       .populate("senderId", "firstname email profilepic")
-      .populate("receiverId", "firstname email profilepic");
+      .populate("receiverId", "firstname email profilepic")
+      .lean(); // ✅ Use lean() for better performance
+
+    console.log("✅ Message populated and ready to send");
 
     // ============================
     // SOCKET EMIT
     // ============================
     if (req.io && req.socketUserMap) {
-      const receiverSocket = req.socketUserMap.get(receiverId);
-      const senderSocket = req.socketUserMap.get(senderId);
+      const receiverSocket = req.socketUserMap.get(receiverId.toString());
+      const senderSocket = req.socketUserMap.get(senderId.toString());
 
       if (receiverSocket) {
         req.io.to(receiverSocket).emit("receive_message", populatedMessage);
+        console.log("📡 Message sent to receiver via socket");
       }
+      
       if (senderSocket) {
         req.io.to(senderSocket).emit("receive_message", populatedMessage);
+        console.log("📡 Message sent to sender via socket");
       }
+    } else {
+      console.warn("⚠️ Socket.io not available");
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Message sent successfully",
       data: populatedMessage,
@@ -384,7 +412,25 @@ exports.sendmessage = async (req, res) => {
   } catch (error) {
     console.error("❌ Error in sendmessage:", error);
     console.error("Stack trace:", error.stack);
-    res.status(500).json({
+    
+    // Handle specific MongoDB errors
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({
+        success: false,
+        message: "Validation error",
+        error: error.message
+      });
+    }
+
+    if (error.name === 'CastError') {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid ID format",
+        error: error.message
+      });
+    }
+
+    return res.status(500).json({
       success: false,
       message: "Internal server error",
       error: process.env.NODE_ENV === 'development' ? error.message : undefined
