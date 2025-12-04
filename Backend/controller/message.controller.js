@@ -109,17 +109,156 @@ const { updateOne } = require("../models/otp.model");
 //     res.status(500).json({ success: false, message: "Internal server error" });
 //   }
 // };
+// exports.sendmessage = async (req, res) => {
+//   try {
+//     const { message, messageStatus, senderId, receiverId, videocallurl } = req.body;
+
+//     let file = req.file || (req.files && req.files.file);
+//     let mediaUrl = null;
+//     let messageType = "text";
+
+//     // ============================
+//     // VALIDATION
+//     // ============================
+//     if (!file && (!message || !message.trim())) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Message content is required",
+//       });
+//     }
+
+//     // ============================
+//     // MEDIA UPLOAD
+//     // ============================
+//     if (file) {
+//       const uploaded = await cloudinary.uploader.upload(file.tempFilePath, {
+//         folder: "Chat-App",
+//         resource_type: "auto",
+//       });
+
+//       if (!uploaded?.secure_url) {
+//         return res.status(400).json({
+//           success: false,
+//           message: "File upload failed",
+//         });
+//       }
+
+//       mediaUrl = uploaded.secure_url;
+
+//       if (file.mimetype.startsWith("image")) messageType = "image";
+//       else if (file.mimetype.startsWith("video")) messageType = "video";
+//       else return res.status(400).json({ success: false, message: "Unsupported file type" });
+//     }
+
+//     // ============================
+//     // FIND OR CREATE CONVERSATION
+//     // ============================
+//     let conversation = await Conversation.findOne({
+//       members: { $all: [senderId, receiverId] },
+//     });
+
+//     if (!conversation) {
+//       conversation = await Conversation.create({
+//         members: [senderId, receiverId],
+//         messages: [],
+//         unreadCount: [
+//           { user: senderId, count: 0 },
+//           { user: receiverId, count: 0 }
+//         ]
+//       });
+//     }
+
+//     // ============================
+//     // CREATE MESSAGE
+//     // ============================
+//     const newMessage = await Message.create({
+//       conversation: conversation._id,
+//       senderId,
+//       receiverId,
+//       message,
+//       imageOrVideoUrl: mediaUrl,
+//       videocallurl: videocallurl || null,
+//       messageType,
+//       messageStatus: messageStatus || "sent",
+//     });
+
+//     // Push to conversation
+//     conversation.messages.push(newMessage._id);
+//     conversation.lastMessage = newMessage._id;
+
+//     // ============================
+//     // UPDATE UNREAD COUNT
+//     // ============================
+//     let receiverUnread = conversation.unreadCount.find(
+//       (u) => u.user.toString() === receiverId
+//     );
+
+//     if (!receiverUnread) {
+//       conversation.unreadCount.push({ user: receiverId, count: 1 });
+//     } else {
+//       receiverUnread.count += 1;
+//     }
+
+//     await conversation.save();
+
+//     // ============================
+//     // POPULATE MESSAGE FOR RESPONSE
+//     // ============================
+//     const populatedMessage = await Message.findById(newMessage._id)
+//       .populate("senderId", "firstname email profilepic")
+//       .populate("receiverId", "firstname email profilepic");
+
+//     // ============================
+//     // SOCKET EMIT
+//     // ============================
+//     if (req.io && req.socketUserMap) {
+//       const receiverSocket = req.socketUserMap.get(receiverId);
+//       const senderSocket = req.socketUserMap.get(senderId);
+
+//       if (receiverSocket) {
+//         req.io.to(receiverSocket).emit("receive_message", populatedMessage);
+//       }
+//       if (senderSocket) {
+//         req.io.to(senderSocket).emit("receive_message", populatedMessage);
+//       }
+//     }
+
+//     res.status(200).json({
+//       success: true,
+//       message: "Message sent successfully",
+//       data: populatedMessage,
+//     });
+
+//   } catch (error) {
+//     console.error("Error in sendmessage:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: "Internal server error",
+//     });
+//   }
+// };
 exports.sendmessage = async (req, res) => {
   try {
     const { message, messageStatus, senderId, receiverId, videocallurl } = req.body;
 
-    let file = req.file || (req.files && req.files.file);
+    // ✅ Fix file access
+    let file = req.files?.file; // express-fileupload uses req.files
     let mediaUrl = null;
     let messageType = "text";
+
+    console.log("📥 Request body:", req.body);
+    console.log("📎 File received:", file ? file.name : "No file");
 
     // ============================
     // VALIDATION
     // ============================
+    if (!senderId || !receiverId) {
+      return res.status(400).json({
+        success: false,
+        message: "senderId and receiverId are required",
+      });
+    }
+
     if (!file && (!message || !message.trim())) {
       return res.status(400).json({
         success: false,
@@ -131,23 +270,36 @@ exports.sendmessage = async (req, res) => {
     // MEDIA UPLOAD
     // ============================
     if (file) {
-      const uploaded = await cloudinary.uploader.upload(file.tempFilePath, {
-        folder: "Chat-App",
-        resource_type: "auto",
-      });
+      try {
+        const uploaded = await cloudinary.uploader.upload(file.tempFilePath, {
+          folder: "Chat-App",
+          resource_type: "auto",
+        });
 
-      if (!uploaded?.secure_url) {
-        return res.status(400).json({
+        if (!uploaded?.secure_url) {
+          return res.status(400).json({
+            success: false,
+            message: "File upload failed",
+          });
+        }
+
+        mediaUrl = uploaded.secure_url;
+
+        if (file.mimetype.startsWith("image")) messageType = "image";
+        else if (file.mimetype.startsWith("video")) messageType = "video";
+        else {
+          return res.status(400).json({ 
+            success: false, 
+            message: "Unsupported file type" 
+          });
+        }
+      } catch (uploadError) {
+        console.error("❌ Cloudinary upload error:", uploadError);
+        return res.status(500).json({
           success: false,
-          message: "File upload failed",
+          message: "Failed to upload file to cloud storage",
         });
       }
-
-      mediaUrl = uploaded.secure_url;
-
-      if (file.mimetype.startsWith("image")) messageType = "image";
-      else if (file.mimetype.startsWith("video")) messageType = "video";
-      else return res.status(400).json({ success: false, message: "Unsupported file type" });
     }
 
     // ============================
@@ -175,7 +327,7 @@ exports.sendmessage = async (req, res) => {
       conversation: conversation._id,
       senderId,
       receiverId,
-      message,
+      message: message || "",
       imageOrVideoUrl: mediaUrl,
       videocallurl: videocallurl || null,
       messageType,
@@ -230,14 +382,15 @@ exports.sendmessage = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Error in sendmessage:", error);
+    console.error("❌ Error in sendmessage:", error);
+    console.error("Stack trace:", error.stack);
     res.status(500).json({
       success: false,
       message: "Internal server error",
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
 };
-
 
 
 
