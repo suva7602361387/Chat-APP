@@ -41,6 +41,7 @@ function Signup() {
     try {
       const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/sendotp`, {
         email: userInfo.email,
+         timeout: 30000,  
       });
       // const response=await apiConnector("POST",SENDOTP_API,{
       //   email:userInfo.email
