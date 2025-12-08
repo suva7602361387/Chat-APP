@@ -38,23 +38,47 @@ function Signup() {
 
     setSignupData(userInfo);
 
-    try {
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/sendotp`, {
-        email: userInfo.email,
-         timeout: 30000,  
-      });
-      // const response=await apiConnector("POST",SENDOTP_API,{
-      //   email:userInfo.email
+    // try {
+    //   const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/sendotp`, {
+    //     email: userInfo.email,
+    //      timeout: 30000,  
+    //   });
+    //   // const response=await apiConnector("POST",SENDOTP_API,{
+    //   //   email:userInfo.email
 
-      // })
+    //   // })
 
-      if (!response.data.success) {
-        throw new Error(response.data.message);
+    //   if (!response.data.success) {
+    //     throw new Error(response.data.message);
+    //   }
+
+    //   toast.success("OTP Sent Successfully");
+    //   navigate("/verify-email");
+    // } 
+       try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/v1/users/sendotp`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: userInfo.email,
+          }),
+          signal: AbortSignal.timeout(30000), // 30 second timeout
+        }
+      );
+
+      const data = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.message);
       }
 
       toast.success("OTP Sent Successfully");
       navigate("/verify-email");
-    } catch (error) {
+    }  catch (error) {
       console.error(error);
       if (error.response) {
         toast.error("Error in sending otp: " + error.response.data.error);
