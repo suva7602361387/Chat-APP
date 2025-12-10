@@ -7,6 +7,7 @@ const Conversation = require("../models/conversation.model");
 const { getReceiverSocketId, io } = require("../SocketiO/server");
 const path = require("path");
 const { updateOne } = require("../models/otp.model");
+const mongoose = require("mongoose");
 
 // -------------------- SEND MESSAGE --------------------
 // exports.sendmessage = async (req, res) => {
@@ -238,6 +239,8 @@ const { updateOne } = require("../models/otp.model");
 //   }
 // };
 exports.sendmessage = async (req, res) => {
+      console.log("📩 Send message body:", req.body);
+
   try {
     const { message, messageStatus, senderId, receiverId, videocallurl } = req.body;
 
