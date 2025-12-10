@@ -52,15 +52,24 @@ const mailSender = async (email, title, body) => {
       else console.log("SMTP connected successfully");
     });
 
-    let info = await transporter.sendMail({
-      from: process.env.MAIL_USER,
-      to: email,
-      subject: title,
-      html: body,
-    });
+    // let info = await transporter.sendMail({
+    //   from: process.env.MAIL_USER,
+    //   to: email,
+    //   subject: title,
+    //   html: body,
+    // });
 
-    console.log("Email Info:", info);
-    return info;
+    // console.log("Email Info:", info);
+    // return info;
+    transporter.sendMail({
+  from: process.env.MAIL_USER,
+  to: email,
+  subject: title,
+  html: body,
+})
+.then(info => console.log("Email sent:", info))
+.catch(err => console.log("Email error:", err));
+
 
   } catch (error) {
     console.log("Mail Error:", error.message);
