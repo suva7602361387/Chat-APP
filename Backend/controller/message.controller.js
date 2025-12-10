@@ -398,10 +398,10 @@ exports.sendmessage = async (req, res) => {
         console.log("📡 Message sent to receiver via socket");
       }
       
-      if (senderSocket) {
-        req.io.to(senderSocket).emit("receive_message", populatedMessage);
-        console.log("📡 Message sent to sender via socket");
-      }
+      // if (senderSocket) {
+      //   req.io.to(senderSocket).emit("receive_message", populatedMessage);
+      //   console.log("📡 Message sent to sender via socket");
+      // }
     } else {
       console.warn("⚠️ Socket.io not available");
     }
