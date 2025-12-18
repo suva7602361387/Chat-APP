@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
 
   try {
     initialUserState = storedUser ? JSON.parse(storedUser) : null;
-    //console.log("Auth",initialUserState)
+    console.log("Auth",initialUserState)
   } catch (error) {
     console.error("Failed to parse user data:", error);
     initialUserState = null;
